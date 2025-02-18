@@ -6,7 +6,7 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:49:35 by poverbec          #+#    #+#             */
-/*   Updated: 2025/02/18 09:55:29 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/18 13:18:09 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,8 @@
 # include <limits.h>
 # include <sys/wait.h>
 # include <math.h>
+# include <pthread.h>
+# define WIDTH 1920
+# define HEIGHT 1080
 
 #endif

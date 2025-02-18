@@ -6,20 +6,42 @@
 #    By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/04 10:50:48 by poverbec          #+#    #+#              #
-#    Updated: 2025/02/18 09:52:56 by poverbec         ###   ########.fr        #
+#    Updated: 2025/02/18 13:39:51 by poverbec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
+
+
+# NAME = fractol
+
+# SRCS = main.c
+
+# OBJECTS = $(SRCS).c=%.o)
+
+# MLX 		=	$(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm -Ofast -ffast-math -march=native -mtune=native -funroll-loops
+
+# CC = cc
+
+# CFLAGS			= -Wall -Werror -Wextra -Wunreachable-code -Ofast -ffast-math -march=native -mtune=native -funroll-loops #-lm
+# all: mlx ${NAME}
+
+# ${NAME}: $(OBJECTS)
+# 	${CC} ${CFLAGS} -o ${NAME} $(OBJECTS) $(LIBFT) $(MLX)
+
+
 
 NAME 	= fractol
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -g
 LIBFT	= ./libft/libft.a
 SOURCE_DIR = ./src/
+MLX 		=	$(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm -Ofast -ffast-math -march=native -mtune=native -funroll-loops
+MLX_DIR = ./mlx
+MLX_REPO = https://github.com/codam-coding-college/MLX42.git
 
 # ---------- Subjects ---------- #
 MY_SOURCES = \
-			$(SOURCE_DIR)main.c \
-			$(SOURCE_DIR)helper.c
+			$(SOURCE_DIR)main.c
+# $(SOURCE_DIR)helper.c
 			
 # MY_SOURCES_BONUS = \
 # 			$(SOURCE_DIR)main_bonus.c \
@@ -27,7 +49,7 @@ MY_SOURCES = \
 
 # ---------- Objects ---------- #
 MY_OBJECTS=$(MY_SOURCES:.c=.o)
-MY_OBJECTS_BONUS=$(MY_SOURCES_BONUS:.c=.o)
+# MY_OBJECTS_BONUS=$(MY_SOURCES_BONUS:.c=.o)
 
 # ---------- COLORS AND STUFF ---------- #
 Color_Off = \033[0m
@@ -42,7 +64,7 @@ all: $(NAME)
 
 $(NAME): $(MY_OBJECTS) $(LIBFT)
 	@echo "$(BIYellow) Compiling $(NAME) $(Color_Off)"
-	@$(CC) $(CFLAGS) $(MY_OBJECTS) $(LIBFT) -o $(NAME)
+	@$(CC) $(CFLAGS) $(MY_OBJECTS) $(LIBFT) -o $(NAME) $(MLX)
 	@if [ -f $(NAME) ]; then \
 		echo "$(On_Yellow)------------------------------------------$(Color_Off)"; \
 		echo "$(BGreen)PROCESS COMPLETED SUCCESSFULLY!$(Color_Off)"; \
@@ -52,7 +74,9 @@ $(NAME): $(MY_OBJECTS) $(LIBFT)
 		exit 1; \
 	fi
 
-
+mlx:
+	if [ ! -d "$(MLX_DIR)" ]; then git clone $(MLX_REPO) $(MLX_DIR); fi
+	cmake ./mlx/ -B $(MLX_DIR)/build && make -C $(MLX_DIR)/build -j4 CFLAGS+="-Ofast -ffast-math -march=native -mtune=native -funroll-loops"
 
 # bonus: $(MY_OBJECTS_BONUS) $(LIBFT)
 # 	@echo "$(BIYellow) Compiling  Bonus $(Color_Off)"

@@ -1,5 +1,6 @@
 **/*.o
 **/*.out
-**/*main
 *.txt
-
+*.vscode
+*.DS_Store
+*mlx
