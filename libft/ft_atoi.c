@@ -6,12 +6,13 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/15 12:35:14 by poverbec          #+#    #+#             */
-/*   Updated: 2025/01/13 17:07:59 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/19 10:20:38 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "./libft.h"
 
+// str to integer
 int	ft_atoi(const char *str)
 {
 	int	isneg;

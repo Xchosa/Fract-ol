@@ -6,20 +6,14 @@
 #    By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/04 10:50:48 by poverbec          #+#    #+#              #
-#    Updated: 2025/02/18 13:39:51 by poverbec         ###   ########.fr        #
+#    Updated: 2025/02/20 10:13:00 by poverbec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 
-# NAME = fractol
-
-# SRCS = main.c
-
-# OBJECTS = $(SRCS).c=%.o)
 
 # MLX 		=	$(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm -Ofast -ffast-math -march=native -mtune=native -funroll-loops
 
-# CC = cc
 
 # CFLAGS			= -Wall -Werror -Wextra -Wunreachable-code -Ofast -ffast-math -march=native -mtune=native -funroll-loops #-lm
 # all: mlx ${NAME}
@@ -28,19 +22,25 @@
 # 	${CC} ${CFLAGS} -o ${NAME} $(OBJECTS) $(LIBFT) $(MLX)
 
 
-
 NAME 	= fractol
 CC		= cc
 CFLAGS	= -Wall -Wextra -Werror -g
 LIBFT	= ./libft/libft.a
-SOURCE_DIR = ./src/
 MLX 		=	$(MLX_DIR)/build/libmlx42.a -ldl -lglfw -pthread -lm -Ofast -ffast-math -march=native -mtune=native -funroll-loops
 MLX_DIR = ./mlx
 MLX_REPO = https://github.com/codam-coding-college/MLX42.git
 
+SOURCE_DIR = src/
+OBJ_DIR = obj/
+BIN_DIR = bin/
+
+
 # ---------- Subjects ---------- #
 MY_SOURCES = \
-			$(SOURCE_DIR)main.c
+			$(SOURCE_DIR)main.c \
+			$(SOURCE_DIR)helper.c \
+			$(SOURCE_DIR)coloring.c
+			
 # $(SOURCE_DIR)helper.c
 			
 # MY_SOURCES_BONUS = \
@@ -48,7 +48,9 @@ MY_SOURCES = \
 # 			$(SOURCE_DIR)helper_bonus.c
 
 # ---------- Objects ---------- #
-MY_OBJECTS=$(MY_SOURCES:.c=.o)
+
+MY_OBJECTS=$(MY_SOURCES:$(SOURCE_DIR)%.c=$(OBJ_DIR)%.o)
+
 # MY_OBJECTS_BONUS=$(MY_SOURCES_BONUS:.c=.o)
 
 # ---------- COLORS AND STUFF ---------- #
@@ -62,6 +64,12 @@ Red = \033[0;31m
 
 all: $(NAME)
 
+$(OBJ_DIR)%.o: $(SOURCE_DIR)%.c | $(OBJ_DIR)
+	$(CC)	$(CFLAGS)	-c $<	-o $@
+
+$(OBJ_DIR):
+	mkdir -p	$(OBJ_DIR)
+	
 $(NAME): $(MY_OBJECTS) $(LIBFT)
 	@echo "$(BIYellow) Compiling $(NAME) $(Color_Off)"
 	@$(CC) $(CFLAGS) $(MY_OBJECTS) $(LIBFT) -o $(NAME) $(MLX)
@@ -73,6 +81,10 @@ $(NAME): $(MY_OBJECTS) $(LIBFT)
 		echo "$(Red)failed to compile $(NAME) $(Color_Off)"; \
 		exit 1; \
 	fi
+
+$(LIBFT):
+	make -C ./libft
+
 
 mlx:
 	if [ ! -d "$(MLX_DIR)" ]; then git clone $(MLX_REPO) $(MLX_DIR); fi
@@ -90,15 +102,16 @@ mlx:
 # 		exit 1; \
 # 	fi
 	
-$(LIBFT):
-	make -C ./libft
 
-%.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+
+# %.o: %.c
+# 	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
 	@echo "$(Yellow)-----Removing Object Files--------$(Color_Off)"
-	@rm -f $(MY_OBJECTS)
+	@rm -rf $(OBJ_DIR) $(BIN_DIR)
+	make -C libft fclean
+	@rm -rf $(LIBMLX)/build
 
 fclean: clean
 	@echo "$(On_Yellow)Removing Executables...$(Color_Off)"

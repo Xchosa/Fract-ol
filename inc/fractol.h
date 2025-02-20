@@ -6,7 +6,7 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:49:35 by poverbec          #+#    #+#             */
-/*   Updated: 2025/02/18 13:18:09 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/20 11:06:24 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,33 @@
 # include <sys/wait.h>
 # include <math.h>
 # include <pthread.h>
+#include "../mlx/include/MLX42/MLX42.h"
+
 # define WIDTH 1920
 # define HEIGHT 1080
+
+#define BPP sizeof(int32_t)
+#define stderr 2
+
+typedef struct s_fractol
+{
+	float	width;
+	float	real;
+	float	i;
+
+	
+	float		zoom;
+	float		width_frac;
+	float		heigth_frac;
+	mlx_image_t	*img;
+	mlx_t		*mlx;
+}	t_fractol;
+
+void	ft_error(void);
+void	ft_escape_key(mlx_key_data_t keydata, void* param);
+void	mlx_scroll_hook(mlx_t* mlx, mlx_scrollfunc func, void* param);
+
+int		get_rgba(int r, int g, int b, int a);
+int		get_g(int rgba);
 
 #endif
