@@ -6,7 +6,7 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:48:27 by poverbec          #+#    #+#             */
-/*   Updated: 2025/02/20 11:15:20 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/20 16:44:33 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,19 +36,16 @@
 // `A`     | Alpha Channel | `0x000000FF`
 
 // julia fc, c= -0.8 + 0.156i
-int	main(int ac, char**av)
+
+int	main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-	mlx_t		*mlx;
-	mlx_image_t	*img;
-	
-	int i = 0;
+	mlx_t			*mlx;
+	mlx_image_t		*img;
+	t_fractol 		fractol;
 
-	// z = zi + c
-	// z =zˆ2 + c
-	
-	
+	// atexit(leaks);
 	
 	// if((ac == 2)&& ft_strncmp(av[1],"julia", 5 ))
 	// 	{
@@ -64,41 +61,66 @@ int	main(int ac, char**av)
 	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
 		ft_error();
 	
+	init_fractol(&fractol, img, mlx);
 	
-	// mlx_put_pixel(img, 250, 250, 0xFF0000FF);// ein pixel for demo
-	mlx_put_pixel(img, 50, 50, get_g(128));
+	mlx_put_pixel(img, 5, 10, 0xFF0000FF);// ein pixel for demo
+	//mlx_put_pixel(img, 50, 50, get_g(128));
+	
+	
 	ft_memset(img->pixels, 255, img->width * img->height * BPP);
 	//BPP 4 bytes for for channels BPP sizeof(int32_t)
-	mlx_image_to_window(mlx, img, 300, 50); // draw image at (0.0)
-	while(i < 42)
-	{
-		img->instances[0].x += 5;
-		img->instances[0].y -= 5;
-		i++;
-	// mlx_loop_hook(data, ft_hook, data);
+	
+	//mlx_image_to_window(mlx, img, 300, 50); // draw image at (0.0)
+	mlx_image_to_window(fractol.mlx, fractol.img, 10, 50);
+
 	// loop hook gets calles once per loop
-	mlx_key_hook(mlx, &ft_escape_key, NULL);
-	}	
-	// key hook interrupts
+	mlx_key_hook(mlx, &ft_escape_key, &fractol);   
 	mlx_loop(mlx);// infitie loop // pases adress of hook functions 
 	mlx_terminate(mlx);//freed every left over
 	return (EXIT_SUCCESS);
 }
 
 
-// void ft_error(char *str)
-// {
-// 	if (ft_strncmp("BAD_IMG", str, 8) == 0)
-// 		ft_putchar_fd("Error, could not creat image", 29);
-// }
-
-
 void init_fractol(t_fractol	*fractol, mlx_image_t *img, mlx_t *mlx)
 {
+	fractol->data = 
+	fractol->img = img;
+	fractol->mlx = mlx;
 	fractol->zoom = 1;
 	fractol->width_frac = WIDTH;
 	fractol->heigth_frac = HEIGHT;
-	fractol->img = img;
-	fractol->mlx = mlx;
+	fractol->iterations = 5;
 	
+	fractol->x_real = 2;
+	fractol->y_img = 1;
+	fractol->color = 78;
+	printf("init fractol");
 }
+
+// void mandelbrot_set()
+
+// {
+	mlx_put_pixel()
+	every point mit der formular 
+// }
+// void mandelbrot_set()
+// {
+// 	float a = 0;
+// 	float b = 0;
+// 	float a_squared = 0;
+// 	float b_squared = 0;
+// 	int iteration = 0;
+// 	int iterMax = 200;
+
+// 	while (iteration < iterMax && a_squared + b_squared < 4 ) /// |Z|ˆ2 aˆ2 + bˆ2 < 2ˆ2
+// 	{
+// 		b = 2 * a *b + y; // img i of Z calc 
+// 		a = a_squared - b_squared + x;
+		
+// 		a_squared = a * a;
+// 		b_squared = b * b;
+// 		iteration++;
+// 		printf("a %f | b %f", a , b);
+// 	}
+	
+// }
