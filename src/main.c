@@ -6,7 +6,7 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:48:27 by poverbec          #+#    #+#             */
-/*   Updated: 2025/02/20 16:44:33 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:50:14 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,17 +47,15 @@ int	main(int ac, char **av)
 
 	// atexit(leaks);
 	
-	// if((ac == 2)&& ft_strncmp(av[1],"julia", 5 ))
-	// 	{
-	// 		init_fractol()
-	// 		set_julia();
-	// 	}
-	// ac == 2 mandelbrot 
+	if((ac == 2)&& ft_strncmp(av[1],"mandelbrot", 10 ))
+	{
+		fractol.fractol_set = 1;
+	}
 	
 	mlx = mlx_init(WIDTH, HEIGHT, "fractol", false);
 	if (!mlx)
 		ft_error();
-	img = mlx_new_image(mlx, 256, 256); // 256x256 image
+	img = mlx_new_image(mlx, 256, 256);
 	if (!img || (mlx_image_to_window(mlx, img, 0, 0) < 0))
 		ft_error();
 	
@@ -83,26 +81,70 @@ int	main(int ac, char **av)
 
 void init_fractol(t_fractol	*fractol, mlx_image_t *img, mlx_t *mlx)
 {
-	fractol->data = 
 	fractol->img = img;
 	fractol->mlx = mlx;
 	fractol->zoom = 1;
 	fractol->width_frac = WIDTH;
 	fractol->heigth_frac = HEIGHT;
-	fractol->iterations = 5;
+	fractol->iterations = 11;
 	
-	fractol->x_real = 2;
-	fractol->y_img = 1;
+	fractol->offset_x = 0;
+	fractol->offset_y = 0;
 	fractol->color = 78;
 	printf("init fractol");
+	if (fractol->fractol_set == 1) // set default falue in main
+		{
+			fractol->offset_x = -1.40117; // Seahorse Valley
+			fractol->offset_y = 0;
+		}
+	default_colour(fractol);
+	draw_fractol(fractol);
 }
 
-// void mandelbrot_set()
+
+
+void draw_fractol(t_fractol *fractol)
+{
+	fractol->data->x = 0;
+	while(((fractol->data->x)++) < (fractol->width_frac) + 1)
+	{
+		fractol->data->y = 0;
+		while(((fractol->data->y)++) < (fractol->heigth_frac) + 1)
+		{
+			fractol->data->c_a = (fractol->data->x - WIDTH/2.0) * ( 4.0 / WIDTH) / fractol->zoom + fractol->offset_x;
+			fractol->data->c_b = (fractol->data->y - HEIGHT/2.0) * (4.0 / WIDTH) / fractol->zoom + fractol->offset_y;
+		// scales grind to -2. 2 
+			fractol->data->a = 0;
+			fractol->data->b = 0;
+			fractol->data->n = 0;
+
+			fractol->data->real_a = SQUARE(fractol->data->a) - SQUARE(fractol->data->b);
+			fractol->data->imaginary_b = 2 * fractol->data->a * fractol->data->b;
+			fractol->data->a = fractol->data->real_a + fractol->data->c_a; // Zˆ2 + c  (real)
+			fractol->data->b =	fractol->data->imaginary_b + fractol->data->c_b; // Zˆ2 + c  (imaginary)
+			if((SQUARE(fractol->data->a) + SQUARE(fractol->data->b)) > 4.0)
+				break;// if not black 
+			if(fractol->data->a == fractol->data->prev_a && fractol->data->b == fractol->data->prev_b)
+				{
+					fractol.
+				}
+			fractol->data->prev_a = fractol->data->a;
+			fractol->data->prev_b = fractol->data->b;
+		}// ask deepseek why saq fault
+		// while loop incorect needs data.n 
+	}
+}
+
+
 
 // {
-	mlx_put_pixel()
-	every point mit der formular 
+// 	mlx_put_pixel()
+// 	every point mit der formular 
+	
 // }
+
+
+
 // void mandelbrot_set()
 // {
 // 	float a = 0;

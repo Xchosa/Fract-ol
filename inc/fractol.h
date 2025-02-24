@@ -6,7 +6,7 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:49:35 by poverbec          #+#    #+#             */
-/*   Updated: 2025/02/20 16:34:59 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/24 12:37:42 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,42 +29,54 @@
 # define WIDTH 1920
 # define HEIGHT 1080
 
+#define SQUARE(x) ((x) * (x))
 #define BPP sizeof(int32_t)
+// Bits per pixel 
+// 4 Bits // if endian - only 8 bit colors 
 #define stderr 2
+
+typedef struct s_data
+{
+	float	a;// real
+	float 	b; // imaginary
+	float	prev_a; // detect infitie loop
+	float	prev_b;
+	float	c_a; // complex numbers
+	float	c_b;
+	float	real_a; // a*a - b *b 
+	float	imaginary_b; // 2 * a *b (i ˆ2 = -1 )
+	int		n; // iteration;
+	int		x;
+	int		y; // x element of 0  - (above 0) until Width with width) 
+	int		iterMax;
+}		t_data;
 
 typedef struct s_fractol
 {
 	mlx_image_t	*img;
 	mlx_t		*mlx;
+	t_data		*data;
 	uint32_t	color; // always stay 32 Bits long
 	uint32_t	iterations;
-	t_data		*data;
 	
-	float		x_real;
-	float		y_img;
-	float		x_start_point;
-	float		y_start_point;
 	float		zoom;
 	float		width_frac;
 	float		heigth_frac;
+	float		offset_x;
+	float		offset_y;
+	float		start_point_x;
+	float		start_point_y;
+	int			fractol_set;		
 	
 }	t_fractol;
 
-typedef struct s_data
-{
-	float	a;
-	float 	b;
-	float	a_squared;
-	float	b_squared;
-	int		iteration;
-	int		iterMax;
-}		t_data;
 
 
 void	ft_error(void);
 void	ft_escape_key(mlx_key_data_t keydata, void* param);
 void	mlx_scroll_hook(mlx_t* mlx, mlx_scrollfunc func, void* param);
 void	init_fractol(t_fractol	*fractol, mlx_image_t *img, mlx_t *mlx);
+void	draw_fractol(t_fractol *fractol);
 
 int		get_rgba(int r, int g, int b, int a);
 int		get_g(int rgba);
