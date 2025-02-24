@@ -6,7 +6,7 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/18 09:49:35 by poverbec          #+#    #+#             */
-/*   Updated: 2025/02/24 12:37:42 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:45:09 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,17 @@
 # include <pthread.h>
 #include "../mlx/include/MLX42/MLX42.h"
 
-# define WIDTH 1920
-# define HEIGHT 1080
+# ifndef WIDTH
+# 	define WIDTH 1920
+# endif
 
-#define SQUARE(x) ((x) * (x))
-#define BPP sizeof(int32_t)
+# ifndef HEIGHT
+# 	define HEIGHT 1080
+# endif
+
+# define MAX_KONTRAST 200
+# define SQUARE(x) ((x) * (x))
+# define BPP sizeof(int32_t)
 // Bits per pixel 
 // 4 Bits // if endian - only 8 bit colors 
 #define stderr 2
@@ -56,7 +62,7 @@ typedef struct s_fractol
 	mlx_image_t	*img;
 	mlx_t		*mlx;
 	t_data		*data;
-	uint32_t	color; // always stay 32 Bits long
+	uint32_t	color[MAX_KONTRAST]; // always stay 32 Bits long
 	uint32_t	iterations;
 	
 	float		zoom;
@@ -76,7 +82,8 @@ void	ft_error(void);
 void	ft_escape_key(mlx_key_data_t keydata, void* param);
 void	mlx_scroll_hook(mlx_t* mlx, mlx_scrollfunc func, void* param);
 void	init_fractol(t_fractol	*fractol, mlx_image_t *img, mlx_t *mlx);
-void	draw_fractol(t_fractol *fractol);
+void	default_color(t_fractol *fractol);
+void	draw_mandelbrot(t_fractol *fractol);
 
 int		get_rgba(int r, int g, int b, int a);
 int		get_g(int rgba);

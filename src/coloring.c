@@ -6,7 +6,7 @@
 /*   By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/20 10:12:11 by poverbec          #+#    #+#             */
-/*   Updated: 2025/02/20 10:26:15 by poverbec         ###   ########.fr       */
+/*   Updated: 2025/02/24 15:39:09 by poverbec         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,4 +38,34 @@ int get_g(int rgba)
 {
     // Move 2 bytes to the right and mask out the first byte.
     return ((rgba >> 16) & 0xFF);
+}
+void	default_color(t_fractol *fractol)
+{
+	uint32_t	i;
+	uint32_t	j;
+	double		t;
+
+	i = 0;
+	while(i <= fractol->iterations /2 )
+	{
+		t = (double)i / (fractol->iterations /2);
+		fractol->color[i] = get_rgba(
+			// Red: Cosine wave (no phase shift)
+			(int)(127.5 * (1.0 + cos(2.0 * M_PI * t / 3.0))),
+			 // Green: Cosine wave with 120° phase shift
+			 // ensures values stay in 0, 255, da 127,5 * 1 + 
+			(int)(127.5 * (1.0 + cos(2.0 * M_PI * t / 3.0 + 2.0 * M_PI / 3.0))),
+			 // Blue: Cosine wave with 240° phase shift
+			(int)(127.5 * (1.0 + cos(2.0 * M_PI * t / 3.0 + 4.0 * M_PI / 3.0))),
+			// Alpha (transparency)
+			200);
+		i++;
+	}
+	j = i -1;
+	while(i < fractol->iterations)
+	{
+		fractol->color[i]= fractol->color[j];
+		i++;
+		j++;
+	}
 }

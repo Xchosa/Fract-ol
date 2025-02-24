@@ -6,7 +6,7 @@
 #    By: poverbec <poverbec@student.42heilbronn.    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/12/04 10:50:48 by poverbec          #+#    #+#              #
-#    Updated: 2025/02/20 10:13:00 by poverbec         ###   ########.fr        #
+#    Updated: 2025/02/24 15:45:45 by poverbec         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -39,7 +39,8 @@ BIN_DIR = bin/
 MY_SOURCES = \
 			$(SOURCE_DIR)main.c \
 			$(SOURCE_DIR)helper.c \
-			$(SOURCE_DIR)coloring.c
+			$(SOURCE_DIR)coloring.c \
+			$(SOURCE_DIR)fractol_sets.c 
 			
 # $(SOURCE_DIR)helper.c
 			
